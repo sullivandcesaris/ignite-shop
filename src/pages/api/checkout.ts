@@ -1,35 +1,30 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { stripe } from "@/lib/stripe";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler( req: NextApiRequest, res: NextApiResponse ) {
-  
-  const { priceId } = req.body;
-  
-  //evitar que o usuário acesse essa rota por URL
-  if (req.method !== 'POST') {
-    return res.status(405).json({error: 'Method not allowed.'});
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  try {
+
+    const { cartDetails } = req.body;
+
+    const successUrl = `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${process.env.NEXT_PUBLIC_URL}/`;
+
+    const line_items = Object.values(cartDetails).map(item => ({
+      price: item?.sku,
+      quantity: item?.quantity,
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      line_items
+    });
+
+    res.status(201).json({ sessionId: session.id });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-
-  if (!priceId) {
-    return res.status(404).json({error: 'Price not found.'});
-  }
-
-  const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
-  const cancelUrl = `${process.env.NEXT_URL}/`;
-
-  const checkoutSession = await stripe.checkout.sessions.create({
-    success_url: successUrl,
-    cancel_url: cancelUrl,
-    mode: 'payment',
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      }
-    ],
-  })
-
-  return res.status(201).json({
-    checkoutUrl: checkoutSession.url,
-  })
 }
