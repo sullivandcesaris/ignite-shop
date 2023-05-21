@@ -42,6 +42,12 @@ export const Product = styled('div', {
     opacity: 0,
     transition: 'all 0.2s ease-in-out',
 
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.5rem',
+    },
+
     strong: {
       fontSize: '$lg',
       color: '$gray100',
@@ -52,6 +58,25 @@ export const Product = styled('div', {
       fontWeight: 'bold',
       color: '$green300',
     },
+
+    button: {
+      padding: '1rem',
+      backgroundColor: '$green500',
+      border: 0,
+      borderRadius: '8px',
+      lineHeight: 0,
+      transition: 'backgroundColor 0.2',
+
+      svg: {
+        lineHeight: 0,
+        color: '$gray100',
+      },
+
+      '&:hover': {
+        opacity: 0.8,
+        cursor: 'pointer',
+      }
+    }
   },
 
   '&:hover': {

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@stitches/react": "^1.2.8",
+    "@stripe/stripe-js": "^1.53.0",
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -18,9 +19,11 @@
     "eslint-config-next": "13.4.1",
     "keen-slider": "^6.8.5",
     "next": "13.4.1",
+    "phosphor-react": "^1.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "stripe": "^12.5.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "use-shopping-cart": "^3.1.7"
   }
 }
